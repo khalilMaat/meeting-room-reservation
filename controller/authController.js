@@ -16,8 +16,10 @@ const register = async (req,res)=>{
         if(user){
             res.status(201).send("User Register Successfully");
         }
+
+        return res.status(406).send("Something Worng !!");
     }catch(err){
-        res.status(406).send(err.message);
+        res.status(500).send(err.message);
     }
 }
 //async with await is a promise to get data from database
@@ -39,7 +41,7 @@ const login =  async (req,res)=>{
         });
 
     }catch(err){
-        return res.status(401).send(err.message);
+        return res.status(500).send(err.message);
     }
 
 }

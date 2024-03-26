@@ -10,22 +10,24 @@ try{
 
     const [bearer, token] = authHeader.split(' ');
     
-    if(bearer && bearer.toLowerCase() === 'bearer'){
-        if(token){
+    if(bearer && bearer.toLowerCase() === 'bearer' && token){
+        
         let verfiyResult = verifyToken(token);
-        console.log(verfiyResult);
+        
         const user = await userModel.findOne({
             email: verfiyResult.email,
         });
 
         req.authenticated = !!user;
+
         if (!user){
             return res.status(404).send("ERROR: invalid token");
         }
         
         req.user = user;
+        
 		return next();
-    }
+   
     }
 }catch(err){
     return res.status(401).send(err.message);

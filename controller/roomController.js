@@ -4,12 +4,14 @@ const roomModel = require("../model/roomModel");
 //ADD
 const createRoom = async (req,res) => {
     try{
-    const {name,capacity,equipment} = req.body;
+        
+    const {name,capacity,equipment,availability} = req.body;
 
     const room = await roomModel.create({
         name,
         capacity,
         equipment,
+        availability
     })
 
     if(room){
@@ -17,7 +19,7 @@ const createRoom = async (req,res) => {
     }
 
     }catch(err){
-        return res.status(406).send(err.message);
+        return res.status(500).send(err.message);
     }
 }
 
@@ -30,11 +32,47 @@ const getAllRoom = async (req,res)=>{
     if(room){
         return res.status(200).send(room);
     }
+    return res.status(404).send("Not Room Found !!");
 
     }catch(err){
 
-    return res.status(404).send(err.message);
+    return res.status(500).send(err.message);
 }
 }
 
-module.exports = {createRoom, getAllRoom};
+//Update 
+const updateRoom = async (req,res)=>{
+    try{
+    const {name,capacity,equipment,availability} = req.body;
+    const updatedRoom = await roomModel.updateOne({_id:req.params.id},{
+        $set:{
+            name:name,
+            capacity:capacity,
+            equipment:equipment,
+            availability:availability,
+        }
+    });
+
+    return res.status(201).send("Updated Successfully");
+
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
+
+}
+
+//Delete
+const deleteRoom = async (req,res) => {
+    try{
+        const deletedRoom = await roomModel.findByIdAndDelete({_id:req.params.id});
+        if(deletedRoom){
+            return res.status(201).send("Room Deleted Successfully");
+        }
+        
+        return res.status(404).send("Room Not Found !!!");
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
+}
+
+module.exports = {createRoom, getAllRoom, updateRoom, deleteRoom};

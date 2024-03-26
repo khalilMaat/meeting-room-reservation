@@ -1,11 +1,13 @@
 //import
 const express = require("express");
 const app = express();
-require("dotenv").config();
+
 const mongoose = require("mongoose");
 const roomRouter = require("./routes/roomRoute");
 const authRouter = require("./routes/authRoute");
+const reservationRouter = require("./routes/reservationRoute");
 
+require("dotenv").config();
 const PORT = process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
 const DATABASE_NAME = process.env.DATABASE_NAME;
@@ -13,8 +15,10 @@ const DATABASE_NAME = process.env.DATABASE_NAME;
 
 //Room Route:
 app.use(express.json());
-app.use("/room", roomRouter);
 app.use("/auth",authRouter);
+app.use("/room", roomRouter);
+app.use("/reservation",reservationRouter);
+
 
 //Connect To DB and Start Server
 mongoose.connect(MONGODB_URI+DATABASE_NAME).then(() => {
