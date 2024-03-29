@@ -9,5 +9,7 @@ roomRouter.post("/create",checkAuth ,roomController.createRoom);
 roomRouter.get("/all" ,checkAuth, roomController.getAllRoom);
 roomRouter.put("/:id",checkAuth, roomController.updateRoom);
 roomRouter.delete("/:id",checkAuth, roomController.deleteRoom);
+roomRouter.get("/:id",checkAuth,roomController.getRoomById);
+
 
 module.exports = roomRouter;

@@ -16,13 +16,6 @@ const roomSchema = new Schema(
     type: [String],
     required: true
   },
-  availability: {
-    type: [{
-      startTime: Date,
-      endTime: Date
-    }],
-    default: [],
-  },
   },
   { timestamps: true }, //display the created and updated date 
 

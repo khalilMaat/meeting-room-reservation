@@ -9,5 +9,6 @@ reservationRouter.post("/create",checkAuth,reservationController.createReservati
 reservationRouter.get("/all",checkAuth,reservationController.getAllReservation);
 reservationRouter.put("/:id",checkAuth,reservationController.updateReservation);
 reservationRouter.delete("/:id",checkAuth,reservationController.deleteReservation);
+reservationRouter.get("/:id",checkAuth,reservationController.getRoomById);
 
 module.exports = reservationRouter;

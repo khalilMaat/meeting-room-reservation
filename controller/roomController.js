@@ -5,13 +5,12 @@ const roomModel = require("../model/roomModel");
 const createRoom = async (req,res) => {
     try{
         
-    const {name,capacity,equipment,availability} = req.body;
+    const {name,capacity,equipment} = req.body;
 
     const room = await roomModel.create({
         name,
         capacity,
-        equipment,
-        availability
+        equipment
     })
 
     if(room){
@@ -43,13 +42,12 @@ const getAllRoom = async (req,res)=>{
 //Update 
 const updateRoom = async (req,res)=>{
     try{
-    const {name,capacity,equipment,availability} = req.body;
+    const {name,capacity,equipment} = req.body;
     const updatedRoom = await roomModel.updateOne({_id:req.params.id},{
         $set:{
             name:name,
             capacity:capacity,
-            equipment:equipment,
-            availability:availability,
+            equipment:equipment, 
         }
     });
 
@@ -75,4 +73,18 @@ const deleteRoom = async (req,res) => {
     }
 }
 
-module.exports = {createRoom, getAllRoom, updateRoom, deleteRoom};
+//get by id
+const getRoomById = async (req,res)=>{
+    try{
+    const room = await roomModel.findById(req.params.id);
+
+    if(room){
+        return res.status(200).send(room);
+    }
+    return res.status(404).send("Not Room Found By this ID");
+}catch(err){
+    return res.status(500).send(err.message);
+}
+}
+
+module.exports = {createRoom, getAllRoom, updateRoom, deleteRoom,getRoomById};

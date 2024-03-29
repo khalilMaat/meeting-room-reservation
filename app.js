@@ -1,13 +1,14 @@
 //import
 const express = require("express");
 const app = express();
+require("dotenv").config();
 
 const mongoose = require("mongoose");
 const roomRouter = require("./routes/roomRoute");
 const authRouter = require("./routes/authRoute");
 const reservationRouter = require("./routes/reservationRoute");
 
-require("dotenv").config();
+
 const PORT = process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
 const DATABASE_NAME = process.env.DATABASE_NAME;

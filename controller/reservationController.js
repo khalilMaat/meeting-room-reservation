@@ -76,4 +76,20 @@ const deleteReservation = async (req,res)=>{
 }
 
 
-module.exports = {createReservation,getAllReservation,updateReservation,deleteReservation};
+//get by id
+const getRoomById = async (req,res)=>{
+    try{
+    const reservation = await reservationModel.findById(req.params.id);
+
+    if(reservation){
+        return res.status(200).send(reservation);
+    }
+    return res.status(404).send("Not Reservation Found By this ID");
+}catch(err){
+    return res.status(500).send(err.message);
+}
+}
+
+
+
+module.exports = {createReservation,getAllReservation,updateReservation,deleteReservation,getRoomById};

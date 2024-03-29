@@ -15,6 +15,7 @@ const verifyPassword = (password,hashed)=>{
 
 const generateToken = (payload,secret=JWT_SECRET) => {        
     let token = jwt.sign(payload,secret);
+    console.log("Hello  "+token);
     return token;
 }
 
