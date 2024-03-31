@@ -1,9 +1,10 @@
 const express = require("express");
 const userModel = require("../model/userModel");
+const blacklistTokenModel = require("../model/blacklistTokenModel");
 const {hashPassword, verifyPassword, generateToken} = require("../tools/authTools");
 const jwt = require("jsonwebtoken");
 
-const register = async (req,res)=>{
+const register = async (req,res,next)=>{
     try{
         
         const {fullname,email,password} = req.body;
@@ -19,13 +20,13 @@ const register = async (req,res)=>{
 
         return res.status(406).send("Something Worng !!");
     }catch(err){
-        res.status(500).send(err.message);
+        next(err);
     }
 }
 //async with await is a promise to get data from database
 // without await we can't get data
 
-const login =  async (req,res)=>{
+const login =  async (req,res,next)=>{
     try{
         const {fullname,email,password} = req.body;
         
@@ -35,21 +36,41 @@ const login =  async (req,res)=>{
             return res.status(404).send("Email or password is invalid !!");
         }
 
-        const token = generateToken({fullname,email,password});
-       
-        return res.status(200).send({
+        const token = generateToken({email});
+        const {password: pass,role, ...other} = user._doc;
+
+        res.status(200).send({
             message: "successfully logged in",
-            token: token
+            other,
+            token
         });
 
     }catch(err){
-        console.log(err.message);
-        return res.status(500).send(err.message);
+        next(err);
     }
 
 }
 
+const logout = async (req,res,next)=>{
+
+    try{
+    const token = req.headers['authorization'].split(' ')[1];
+    const expiration = new Date();
+    expiration.setHours(expiration.getHours() + 1); 
+    
+    const blacklistToken =  await blacklistTokenModel.create({
+        token,
+        expiration
+    });
+
+    return res.send('Logged out successfully.');
+}catch(err){
+    next(err);
+}
+}
+
 module.exports = {
     register,
-    login
+    login,
+    logout
 }

@@ -2,7 +2,7 @@
 const express = require("express");
 const roomRouter = express.Router();
 const roomController = require("../controller/roomController");
-const checkAuth = require("../middleware/authMiddleware");
+const {checkAuth, authorizeAdmin, authorizeUser} = require("../middleware/authMiddleware");
 
 
 roomRouter.post("/create",checkAuth ,roomController.createRoom);
